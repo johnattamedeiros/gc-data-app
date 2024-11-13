@@ -3,7 +3,7 @@ const { sequelize } = require('./config/db');
 const matchRoutes = require('./routes/matchRoutes');
 const playerRoutes = require('./routes/playerRoutes');
 const fetchAndStoreMatchData = require('./scheduler');
-
+var cors = require('cors')
 
 const app = express();
 app.use(cors())
