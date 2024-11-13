@@ -39,22 +39,30 @@ const fetchAndStoreMatchData = async () => {
             const playerData = await responsePlayerData.json();
             if (playerData.playerInfo.id > 0) {
                 if (playerData.lastMatches) {
+                    console.log("O player tem últimas partidas, quantidade: " + playerData.lastMatches.length);
                     if (playerData.lastMatches[0]) {
                         let lastMatch = playerData.lastMatches[0];
-                        if (lastMatch.id !== player.idLastMatch) {
-                            lastMatch["idPlayer"] = player.id;
-                            MatchService.insertMatch(lastMatch);
-                            PlayerService.updateLastMatchForPlayer(player.id, lastMatch.id);
+
+                        if (!lastMatch.daysInactive) {
+                            console.log("O player tem partidas e não está inativo");
+                            if (lastMatch.id !== player.idLastMatch) {
+                                lastMatch["idPlayer"] = player.id;
+                                MatchService.insertMatch(lastMatch);
+                                PlayerService.updateLastMatchForPlayer(player.id, lastMatch.id);
+                            } else {
+                                console.log("Partida " + lastMatch.id + " já foi inserida para o player " + player.id);
+                            }
                         } else {
-                            console.log("Partida " + lastMatch.id + " já foi inserida para o player " + player.id);
+                            console.log("Usuário está inativo");
+                            console.log(lastMatch);
                         }
                     }
                 }
-                if(playerData.playerInfo){
+                if (playerData.playerInfo) {
                     PlayerService.updatePlayer(player.id, playerData.playerInfo);
                 }
-               
-                
+
+
             }
         }
         console.log('All players updated data. Total: ' + sequelizedPlayers.length);
