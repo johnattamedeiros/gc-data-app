@@ -4,11 +4,11 @@ const Player = require('./Player');
 const Match = sequelize.define('Match', {
     id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true,
         primaryKey: true,
     },
     idPlayer: {
         type: DataTypes.INTEGER,
+        primaryKey: true,
         allowNull: false,
         references: {
             model: Player,
