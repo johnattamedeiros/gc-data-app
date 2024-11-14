@@ -18,7 +18,7 @@ class MatchService {
                 include: [
                     {
                         model: Player,
-                        attributes: ['id', 'nick', 'level'],
+                        attributes: ['id', 'nick', 'level','stats'],
                     },
                 ],
                 order: [['createdAt', 'DESC']],
