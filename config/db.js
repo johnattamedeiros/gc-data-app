@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require('sequelize');
+const { Sequelize, DataTypes} = require('sequelize');
 require('dotenv').config();
 
 const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, process.env.DB_PASSWORD, {
@@ -8,7 +8,6 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
 });
 
 sequelize.authenticate()
-    .then(() => console.log('Conexão com o banco de dados bem-sucedida.'))
-    .catch((err) => console.error('Não foi possível conectar ao banco de dados:', err));
+    .catch((err) => console.error('Error to connect on database:', err));
 
-module.exports = { sequelize, DataTypes };
+module.exports = { sequelize, DataTypes};

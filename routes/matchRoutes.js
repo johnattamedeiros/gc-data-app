@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const Match = require('../models/Match');
 const MatchService = require('../services/MatchService');
 
 
@@ -10,13 +9,13 @@ router.get('/matches', async (req, res) => {
         const matches = await MatchService.getMatches();
 
         if (!matches.length) {
-            return res.status(404).json({ error: 'Nenhuma partida encontrada' });
+            return res.status(404).json({ error: 'Matches not found' });
         }
 
         res.json(matches);
     } catch (error) {
-        console.error('Erro ao buscar partidas:', error);
-        res.status(500).json({ error: 'Erro ao buscar partidas' });
+        console.error('Error to find matches:', error);
+        res.status(500).json({ error: 'Error to find matches' });
     }
 });
 

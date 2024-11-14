@@ -1,20 +1,25 @@
 const Player = require('../models/Player');
+const Match = require('../models/Match');
 
 class PlayerService {
 
     async getPlayers() {
             return await Player.findAll();
     }
-    async updatePlayer(playerId, data) {
+    async updatePlayer(playerId, playerData) {
         try {
             const player = await Player.findByPk(playerId);
             if (player) {
-                player.nick = data.nick;
-                player.level = data.level;
+                let profile = playerData.playerInfo;
+
+
+                player.nick = profile.nick;
+                player.level = profile.level;
+                player.stats = playerData.stats;
                 await player.save();
             } 
         } catch (error) {
-            console.error('Erro ao atualizar dados do player:', error);
+            console.error('Error to update player:', error);
         }
     }
     async updateLastMatchForPlayer(playerId, matchId) {
@@ -23,12 +28,33 @@ class PlayerService {
             if (player) {
                 player.idLastMatch = matchId;
                 await player.save();
-                console.log('Última partida atualizada para o jogador:', player.id);
+                console.log('Last match updated to player:', player.id);
             } else {
-                console.error('Jogador não encontrado.');
+                console.error('Player no found.');
             }
         } catch (error) {
-            console.error('Erro ao atualizar última partida:', error);
+            console.error('Error to update match for player:', error);
+        }
+    }
+    async getPlayerById(playerId) {
+        try {
+            const player = await Player.findByPk(playerId, {
+                include: [
+                    {
+                        model: Match
+                    },
+                ],
+            });
+
+            if (!player) {
+                console.error('Player not found.');
+                return null;
+            }
+
+            return player;
+        } catch (error) {
+            console.error('Error to find player by ID:', error);
+            throw error;
         }
     }
 }

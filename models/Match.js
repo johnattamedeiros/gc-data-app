@@ -1,6 +1,7 @@
 const { sequelize, DataTypes } = require('../config/db');
 const Player = require('./Player');
 
+
 const Match = sequelize.define('Match', {
     id: {
         type: DataTypes.INTEGER,

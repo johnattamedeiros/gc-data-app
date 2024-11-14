@@ -1,8 +1,15 @@
 const express = require('express');
 const { sequelize } = require('./config/db');
+
+const Match = require('./models/Match');
+const Player = require('./models/Player');
+const MatchData = require('./models/MatchData');
+
 const matchRoutes = require('./routes/matchRoutes');
 const playerRoutes = require('./routes/playerRoutes');
+
 const fetchAndStoreMatchData = require('./scheduler');
+const matchDataScheduler = require('./schedulerMatchData');
 var cors = require('cors')
 
 const app = express();
@@ -18,13 +25,13 @@ const allowCrossDomain = (req, res, next) => {
 app.use(allowCrossDomain);
 
 sequelize.sync()
-    .then(() => console.log('Modelos sincronizados com o banco de dados.'))
-    .catch((err) => console.error('Erro ao sincronizar os modelos:', err));
+    .then(() => console.log('Models of databased updated.'))
+    .catch((err) => console.error('Error to syncronize models:', err));
 
 app.use(express.json());
 app.use('/api', matchRoutes);
 app.use('/api', playerRoutes);
 
 app.listen(PORT, () => {
-    console.log(`Servidor rodando na porta ${PORT}`);
+    console.log(`Server running at port: ${PORT}`);
 });

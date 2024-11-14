@@ -19,6 +19,11 @@ const Player = sequelize.define('Player', {
         allowNull: true,
         defaultValue: 'Capturando Dados',
     },
+    stats: {
+        type: DataTypes.JSONB, 
+        allowNull: true, 
+        defaultValue: {},
+    },
 });
 
 

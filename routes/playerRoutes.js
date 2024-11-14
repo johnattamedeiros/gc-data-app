@@ -9,7 +9,7 @@ router.get('/player', async (req, res) => {
         res.json(players);
     } catch (err) {
         console.error(err);
-        res.status(500).json({ error: 'Erro ao buscar os players' });
+        res.status(500).json({ error: 'Error to find Players' });
     }
 });
 router.post('/player', async (req, res) => {
@@ -17,14 +17,14 @@ router.post('/player', async (req, res) => {
         const { id } = req.body;
 
         if (!id) {
-            return res.status(400).json({ error: 'O campo id é obrigatório.' });
+            return res.status(400).json({ error: 'Field id no null.' });
         }
         const newPlayer = await Player.create({ id });
 
         res.status(201).json(newPlayer);
     } catch (error) {
-        console.error('Erro ao inserir jogador:', error);
-        res.status(500).json({ error: 'Erro ao inserir jogador.' });
+        console.error('Error to insert player:', error);
+        res.status(500).json({ error: 'Error to insert player.' });
     }
 });
 
