@@ -26,6 +26,29 @@ const fetchPlayerData = async (player) => {
     }
 };
 
+const fetchPlayerStat = async (player) => {
+    try {
+        const response = await fetch(`https://gamersclub.com.br/api/box/history/${player.id}`, {
+            headers: {
+                accept: "application/json, text/plain, */*",
+                "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
+                authorization: "Basic ZnJvbnRlbmQ6NDdhMTZHMmtHTCFmNiRMRUQlJVpDI25X",    
+                referer: `https://gamersclub.com.br/player/${player.id}`,
+            },
+            method: "GET",
+        });
+
+        if (!response.ok) {
+            throw new Error(`Gamersclub API not responding for player stat ID: ${player.id}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error(`Error fetching data for player stat ID: ${player.id}`, error);
+        throw error;
+    }
+};
+
 const processPlayerMatches = async (player, playerData) => {
     if (!playerData.lastMatches || !playerData.lastMatches.length) {
         console.log(`No recent matches found for player ID: ${player.id}`);
@@ -58,13 +81,6 @@ const updatePlayerData = async (player, playerData) => {
 const fetchAndStoreMatchData = async () => {
     try {
         let players = await PlayerService.getPlayers();
-        if (process.env.DEBUG) {
-            console.warn("@@@@@@@ Debug mode activated, finding only 1 player @@@@@@@");
-            let playerDebug = await PlayerService.getPlayerById(process.env.DEBUG);
-            players = [];
-            players[0] = playerDebug;
-        }
-
         for (const playerInstance of players) {
             const player = playerInstance.dataValues;
             console.log(`Fetching data for player ID: ${player.id}`);
@@ -75,6 +91,12 @@ const fetchAndStoreMatchData = async () => {
                 await processPlayerMatches(player, playerData);
                 await updatePlayerData(player, playerData);
             }
+
+            console.log(`Fetching data for player stats ID: ${player.id}`);
+
+            const playerStats = await fetchPlayerStat(player);
+            await PlayerService.updatePlayerStats(player.id, playerStats);
+
         }
 
         console.log(`Data updated for all players. Total: ${players.length}`);
@@ -83,11 +105,11 @@ const fetchAndStoreMatchData = async () => {
     }
 };
 if (process.env.DEBUG) {
-    console.warn("@@@@@@@ Debug mode activated, running every 5 minutes @@@@@@@");
-    fetchAndStoreMatchData();
+    console.warn("[PLAYER SCHEDULER] @@@@@@@ Debug mode activated, running every 1 hour @@@@@@@");
+    //fetchAndStoreMatchData();
 } else {
-    console.log("Production mode activated, running every 5 minutes");
-    cron.schedule('*/5 * * * *', fetchAndStoreMatchData);
+    console.log("[PLAYER SCHEDULER]Production mode activated, running every 1 hour");
+    cron.schedule('0 * * * *', fetchAndStoreMatchData);
 }
 
 

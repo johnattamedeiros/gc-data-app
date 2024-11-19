@@ -11,15 +11,23 @@ class PlayerService {
             const player = await Player.findByPk(playerId);
             if (player) {
                 let profile = playerData.playerInfo;
-
-
                 player.nick = profile.nick;
                 player.level = profile.level;
-                player.stats = playerData.stats;
                 await player.save();
             } 
         } catch (error) {
             console.error('Error to update player:', error);
+        }
+    }
+    async updatePlayerStats(playerId, playerData) {
+        try {
+            const player = await Player.findByPk(playerId);
+            if (player) {
+                player.stats = playerData.stat;
+                await player.save();
+            } 
+        } catch (error) {
+            console.error('Error to update player stats:', error);
         }
     }
     async updateLastMatchForPlayer(playerId, matchId) {
@@ -57,6 +65,7 @@ class PlayerService {
             throw error;
         }
     }
+    
 }
 
 module.exports = new PlayerService();

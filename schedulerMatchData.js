@@ -76,6 +76,7 @@ const processSaveMatchData = async (id, matchData) => {
     let matchDataCapture = {};
     matchDataCapture["prob_win_a"] = matchData.prob_win_a;
     matchDataCapture["prob_win_b"] = matchData.prob_win_b;
+    matchDataCapture["data"] = matchData.data;
 
     matchDataCapture["teamAResults"] = await getTeamResults(matchData.jogos.players.team_a);
     matchDataCapture["teamBResults"] = await getTeamResults(matchData.jogos.players.team_b);
@@ -102,8 +103,14 @@ const fetchAndStoreMatchData = async () => {
         console.error("Error during scheduled data fetch and processing:", error);
     }
 };
-//fetchAndStoreMatchData();
-console.log("[MATCH SCHEDULER] Production mode activated, running every 5 minutes");
-cron.schedule('*/5 * * * *', fetchAndStoreMatchData);
+if (process.env.DEBUG) {
+    console.warn("[MATCH SCHEDULER] @@@@@@@ Debug mode activated @@@@@@@");
+    //fetchAndStoreMatchData();
+} else {
+    console.log("[MATCH SCHEDULER] Production mode activated, running every 5 minutes");
+    cron.schedule('*/5 * * * *', fetchAndStoreMatchData);
+}
+
+
 
 module.exports = fetchAndStoreMatchData;

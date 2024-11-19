@@ -6,7 +6,9 @@ const MatchService = require('../services/MatchService');
 
 router.get('/matches', async (req, res) => {
     try {
-        const matches = await MatchService.getMatches();
+       
+        const { idPlayer } = req.query;
+        const matches = await MatchService.getMatches(idPlayer);
 
         if (!matches.length) {
             return res.status(404).json({ error: 'Matches not found' });

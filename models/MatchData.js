@@ -1,6 +1,5 @@
 const { sequelize, DataTypes } = require('../config/db');
 
-
 const MatchData = sequelize.define('MatchData', {
     id: {
         type: DataTypes.INTEGER,

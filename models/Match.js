@@ -1,6 +1,6 @@
 const { sequelize, DataTypes } = require('../config/db');
 const Player = require('./Player');
-
+const MatchData = require('./MatchData')
 
 const Match = sequelize.define('Match', {
     id: {
@@ -56,5 +56,6 @@ const Match = sequelize.define('Match', {
 
 Player.hasMany(Match, { foreignKey: 'idPlayer' });
 Match.belongsTo(Player, { foreignKey: 'idPlayer' });
+Match.hasOne(MatchData, { foreignKey: 'id' });
 
 module.exports = Match;

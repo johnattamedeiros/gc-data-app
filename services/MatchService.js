@@ -12,7 +12,7 @@ class MatchService {
             throw error;
         }
     }
-    async getMatches() {
+    async getMatchesV1() {
         try {
             const matches = await Match.findAll({
                 include: [
@@ -29,6 +29,39 @@ class MatchService {
             throw error;
         }
     }
+    async getMatches(playerId = null) {
+        try {
+            const whereCondition = playerId ? { idPlayer: playerId } : {};
+    
+            const matches = await Match.findAll({
+                where: whereCondition,
+                include: [
+                    {
+                        model: Player,
+                        attributes: ['id', 'nick', 'level', 'stats'], 
+                    },
+                    {
+                        model: MatchData,
+                    },
+                ],
+                order: [
+                    [
+                        sequelize.literal(`
+                            TO_TIMESTAMP("MatchDatum".data->>'data', 'DD/MM/YYYY HH24:MI')
+                        `),
+                        'DESC',
+                    ],
+                ],
+                limit: 50,
+            });
+    
+            return matches;
+        } catch (error) {
+            console.error('Erro ao buscar matches:', error);
+            throw error;
+        }
+    }
+    
     async getUniqueIdMatches() {
         try {
             const [idMatches] = await sequelize.query(`
