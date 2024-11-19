@@ -108,7 +108,7 @@ if (process.env.DEBUG) {
     console.warn("[PLAYER SCHEDULER] @@@@@@@ Debug mode activated, running every 1 hour @@@@@@@");
     //fetchAndStoreMatchData();
 } else {
-    console.log("[PLAYER SCHEDULER]Production mode activated, running every 1 hour");
+    console.log("[PLAYER SCHEDULER] Production mode activated, running every 1 hour");
     cron.schedule('0 * * * *', fetchAndStoreMatchData);
 }
 
