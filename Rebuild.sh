@@ -28,8 +28,3 @@ echo "Iniciando o novo contêiner..."
 docker run -d --name gc_data_app -p 3000:3000 gc_data_app
 
 echo "Container 'gc_data_app' iniciado e disponível na porta 3000."
-
-
-# Montar rebuild dentro do container para quando for rebuildar projeto
-echo "Montando rebuild dentro do container para quando for rebuildar projeto"
-docker run -d --name gc_data_app -p 3000:3000 gc_data_app
