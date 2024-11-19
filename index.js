@@ -5,6 +5,7 @@ const Match = require('./models/Match');
 const Player = require('./models/Player');
 const MatchData = require('./models/MatchData');
 
+const webhook = require('./routes/webhook');
 const matchRoutes = require('./routes/matchRoutes');
 const playerRoutes = require('./routes/playerRoutes');
 
@@ -31,6 +32,7 @@ sequelize.sync()
 app.use(express.json());
 app.use('/api', matchRoutes);
 app.use('/api', playerRoutes);
+app.use('/api', webhook);
 
 app.listen(PORT, () => {
     console.log(`Server running at port: ${PORT}`);
