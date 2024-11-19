@@ -17,7 +17,6 @@ router.post('/webhook', (req, res) => {
     if (ref === 'refs/heads/main') {
         console.log('Push na master detectado! Executando script...');
 
-        // Executar o script .sh
         exec('bash ./Rebuild.sh', (error, stdout, stderr) => {
             if (error) {
                 console.error(`Erro ao executar script: ${error.message}`);
