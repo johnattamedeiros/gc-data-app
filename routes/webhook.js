@@ -18,7 +18,7 @@ router.post('/webhook', (req, res) => {
         console.log('Push na master detectado! Executando script...');
 
         // Executar o script .sh
-        exec('bash /usr/projects/gc-data-app/Rebuild.sh', (error, stdout, stderr) => {
+        exec('bash ./Rebuild.sh', (error, stdout, stderr) => {
             if (error) {
                 console.error(`Erro ao executar script: ${error.message}`);
                 return res.status(500).send('Erro ao executar script.');
