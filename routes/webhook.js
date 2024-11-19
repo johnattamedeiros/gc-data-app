@@ -7,14 +7,16 @@ const bodyParser = require('body-parser');
 router.post('/webhook', (req, res) => {
     const sig = req.headers['x-hub-signature-256'];
 
+    console.log("Acionando webhook");
     // Verificar o segredo, se configurado
     if (process.env.SECRET && sig !== `sha256=${require('crypto').createHmac('sha256', process.env.SECRET).update(JSON.stringify(req.body)).digest('hex')}`) {
+        console.log("Secret incorreto");
         return res.status(403).send('Invalid signature.');
     }
 
     // Verificar se é um push para a branch master
     const { ref } = req.body;
-    if (ref === 'refs/heads/master') {
+    if (ref === 'refs/heads/main') {
         console.log('Push na master detectado! Executando script...');
 
         // Executar o script .sh
@@ -29,6 +31,7 @@ router.post('/webhook', (req, res) => {
             res.status(200).send('Script executado com sucesso.');
         });
     } else {
+        console.log("Push identificado porém não é na master");
         res.status(200).send('Não é um push na master. Nada a fazer.');
     }
 });
