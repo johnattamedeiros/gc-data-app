@@ -16,7 +16,7 @@ router.get('/player', async (req, res) => {
         res.status(500).json({ error: 'Error to find Players' });
     }
 });
-router.get('/player/:id', async (req, res) => {
+router.get('/player/info/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const player = await PlayerService.getPlayerById(id);
