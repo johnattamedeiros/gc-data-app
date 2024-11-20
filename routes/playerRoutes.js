@@ -18,7 +18,7 @@ router.get('/player', async (req, res) => {
 });
 router.get('/player/:id', async (req, res) => {
     try {
-        const { id } = req.params; // Obtém o ID da URL
+        const { id } = req.params;
         const player = await PlayerService.getPlayerById(id);
 
         if (!player) {
@@ -38,20 +38,21 @@ router.post('/player', async (req, res) => {
         if (!id) {
             return res.status(400).json({ error: 'Field id no null.' });
         }
-        const existPlayer = await Player.findByPk(id)
+        let player = await PlayerService.getPlayerById(id);
 
-        if (existPlayer) {
-            await PlayerService.activePlayer(existPlayer.id);
+        if (player) {
+            await PlayerService.activePlayer(player.id);
             console.log('[Player Route] Fetching player data on reactivate ');
-            await PlayerService.fetchUpdatePlayerData(existPlayer);
-            return res.status(201).json(existPlayer);
+            PlayerService.fetchUpdatePlayerData(player);
+            
         } else {
             const newPlayer = await Player.create({ id });
             console.log('[Player Route] Fetching player data on create ');
-            await PlayerService.fetchUpdatePlayerData(newPlayer);
-            res.status(201).json(newPlayer);
+            PlayerService.fetchUpdatePlayerData(newPlayer);
+            player = newPlayer;
         }
 
+        return res.status(201).json(player);
     } catch (error) {
         console.error('Error to insert player:', error);
         res.status(500).json({ error: 'Error to insert player.' });

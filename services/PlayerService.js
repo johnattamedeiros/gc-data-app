@@ -172,7 +172,6 @@ class PlayerService {
     async fetchUpdatePlayerData(player) {
         console.log(`[Player Service] Fetching data for player ID: ${player.id}`);
         const playerData = await this.fetchPlayerData(player);
-
         if (playerData?.playerInfo?.id > 0) {
             if (playerData) {
                 console.log(`[Player Service] Updating player data for ID: ${player.id}`);
@@ -181,9 +180,9 @@ class PlayerService {
         }
 
         console.log(`[Player Service] Fetching data for player stats ID: ${player.id}`);
-
         const playerStats = await this.fetchPlayerStats(player);
         await this.updatePlayerStats(player.id, playerStats);
+        console.log(`[Player Service] Fetched all data for player stats ID: ${player.id}`);
     }
     async  getPlayerById(id) {
         return await Player.findOne({

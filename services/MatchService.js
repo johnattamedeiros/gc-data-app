@@ -8,17 +8,20 @@ const axios = require('axios');
 class MatchService {
     async insertMatch(matchData) {
         try {
-            console.log(`[Match Service] Inserindo partida ${matchData.id}  para o player ${matchData.idPlayer} `);
-            const match = await Match.findOne({
-                where: {
-                    id: matchData.id, 
-                    idPlayer: matchData.idPlayer
+            if (matchData.id) {
+                console.log(`[Match Service] Inserindo partida ${matchData.id}  para o player ${matchData.idPlayer} `);
+
+                const match = await Match.findOne({
+                    where: {
+                        id: matchData.id,
+                        idPlayer: matchData.idPlayer
+                    }
+                });
+                if (match) {
+                    console.log(`[Match Service] Partida já inserida ${matchData.id} para o player ${matchData.idPlayer} - Ignorando inserção`);
+                } else {
+                    await Match.create(matchData);
                 }
-            });
-            if (match) {
-                console.log(`[Match Service] Partida já inserida ${matchData.id} para o player ${matchData.idPlayer} - Ignorando inserção`);
-            } else {
-                await Match.create(matchData);
             }
             return;
         } catch (error) {
@@ -170,8 +173,8 @@ class MatchService {
             let playerHistory = response.data;
             if (playerHistory?.monthMatches.length > 0) {
 
-                if (playerHistory?.monthMatches[0]?.daysInactive) {
-                    console.log('[Match Service] Inativando player, pois está inativo');
+                if (playerHistory?.monthMatches[0]?.daysInactive && playerHistory?.monthMatches.length == 1) {
+                    console.log(`[Match Service] Inativando player ${player.id} ${player.nick}, pois está inativo`);
                     await PlayerService.inactivePlayer(player.id);
                 } else {
                     let countMatches = playerHistory?.matches.matches;
