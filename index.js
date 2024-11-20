@@ -8,8 +8,11 @@ const MatchData = require('./models/MatchData');
 const matchRoutes = require('./routes/matchRoutes');
 const playerRoutes = require('./routes/playerRoutes');
 
-const fetchAndStoreMatchData = require('./scheduler');
-const matchDataScheduler = require('./schedulerMatchData');
+const playerScheduler = require('./playerScheduler');
+const matchScheduler = require('./matchScheduler');
+const matchDataScheduler = require('./matchDataScheduler');
+const PlayerService = require('./services/PlayerService');
+const MatchService = require('./services/MatchService');
 var cors = require('cors')
 
 const app = express();

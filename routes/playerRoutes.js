@@ -49,7 +49,7 @@ router.get('/player/highest-stats', async (req, res) => {
 
 router.get('/player/lowest-stats', async (req, res) => {
     try {
-        const stats = await LowestStatPlayers.findAll(); // Busca todos os registros da view
+        const stats = await LowestStatPlayers.findAll(); 
 
         if (!stats.length) {
             return res.status(404).json({ error: 'No stats found' });
@@ -64,7 +64,7 @@ router.get('/player/lowest-stats', async (req, res) => {
 
 router.get('/player/rating-diff', async (req, res) => {
     try {
-        const data = await RatingDiffByPlayer.findAll(); // Busca todos os registros da view
+        const data = await RatingDiffByPlayer.findAll();
 
         if (!data.length) {
             return res.status(404).json({ error: 'No data found' });

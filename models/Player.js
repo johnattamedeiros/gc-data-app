@@ -1,5 +1,4 @@
 const { sequelize, DataTypes } = require('../config/db');
-const Match = require('./Match'); 
 const Player = sequelize.define('Player', {
     id: {
         type: DataTypes.INTEGER,
@@ -13,6 +12,11 @@ const Player = sequelize.define('Player', {
     level: {
         type: DataTypes.INTEGER,
         allowNull: true
+    },
+    active: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: true,
+        allowNull: false
     },
     nick: {
         type: DataTypes.STRING,
