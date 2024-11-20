@@ -5,8 +5,7 @@ const MatchService = require('./services/MatchService');
 const runMatchByPlayerScheduler = async () => {
     try {
         let players = await PlayerService.getPlayersToScheduler();
-        for (const playerInstance of players) {
-            const player = playerInstance.dataValues;
+        for (const player of players) {
             await MatchService.fetchUpdateMatchesByPlayer(player);
         }
 
@@ -17,8 +16,8 @@ const runMatchByPlayerScheduler = async () => {
 };
 
 console.log("[Match Scheduler] Production mode activated, running every 20 minutes");
-cron.schedule('*/20 * * * *', runMatchByPlayerScheduler);
-//runMatchByPlayerScheduler();
+//cron.schedule('*/20 * * * *', runMatchByPlayerScheduler);
+runMatchByPlayerScheduler();
 
 
 module.exports = runMatchByPlayerScheduler;
