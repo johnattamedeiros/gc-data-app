@@ -185,6 +185,13 @@ class PlayerService {
         const playerStats = await this.fetchPlayerStats(player);
         await this.updatePlayerStats(player.id, playerStats);
     }
+    async  getPlayerById(id) {
+        return await Player.findOne({
+            where: {
+                id: id,
+            }
+        });
+    }
 
 }
 

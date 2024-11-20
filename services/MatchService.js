@@ -9,7 +9,12 @@ class MatchService {
     async insertMatch(matchData) {
         try {
             console.log(`[Match Service] Inserindo partida ${matchData.id}  para o player ${matchData.idPlayer} `);
-            let match = await Match.findByPk(matchData.id);
+            const match = await Match.findOne({
+                where: {
+                    id: matchData.id, 
+                    idPlayer: matchData.idPlayer
+                }
+            });
             if (match) {
                 console.log(`[Match Service] Partida já inserida ${matchData.id} para o player ${matchData.idPlayer} - Ignorando inserção`);
             } else {
@@ -170,7 +175,8 @@ class MatchService {
                     await PlayerService.inactivePlayer(player.id);
                 } else {
                     let countMatches = playerHistory?.matches.matches;
-                    if (player.matches_this_month == countMatches) {
+                    console.log(`[Match Service] Verificando partidas do player ${player.id} ${player.nick} tem na base ${player.matches_this_month} e na GC ${countMatches}`);
+                    if (countMatches <= player.matches_this_month) {
                         console.log(`[Match Service] Todas partidas do player ${player.id} ${player.nick} já foram inseridas`);
                         return;
                     }
@@ -185,8 +191,6 @@ class MatchService {
                     }
                 }
             }
-
-
 
         } catch (error) {
             console.error(`[Match Service] Error fetching data for player stat ID: ${player.id}`, error);

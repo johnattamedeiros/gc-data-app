@@ -16,6 +16,21 @@ router.get('/player', async (req, res) => {
         res.status(500).json({ error: 'Error to find Players' });
     }
 });
+router.get('/player/:id', async (req, res) => {
+    try {
+        const { id } = req.params; // Obtém o ID da URL
+        const player = await PlayerService.getPlayerById(id);
+
+        if (!player) {
+            return res.status(404).json({ error: 'Player not found' });
+        }
+
+        res.json(player);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Error to find Player' });
+    }
+});
 router.post('/player', async (req, res) => {
     try {
         const { id } = req.body;
@@ -23,9 +38,20 @@ router.post('/player', async (req, res) => {
         if (!id) {
             return res.status(400).json({ error: 'Field id no null.' });
         }
-        const newPlayer = await Player.create({ id });
+        const existPlayer = await Player.findByPk(id)
 
-        res.status(201).json(newPlayer);
+        if (existPlayer) {
+            await PlayerService.activePlayer(existPlayer.id);
+            console.log('[Player Route] Fetching player data on reactivate ');
+            await PlayerService.fetchUpdatePlayerData(existPlayer);
+            return res.status(201).json(existPlayer);
+        } else {
+            const newPlayer = await Player.create({ id });
+            console.log('[Player Route] Fetching player data on create ');
+            await PlayerService.fetchUpdatePlayerData(newPlayer);
+            res.status(201).json(newPlayer);
+        }
+
     } catch (error) {
         console.error('Error to insert player:', error);
         res.status(500).json({ error: 'Error to insert player.' });
@@ -49,7 +75,7 @@ router.get('/player/highest-stats', async (req, res) => {
 
 router.get('/player/lowest-stats', async (req, res) => {
     try {
-        const stats = await LowestStatPlayers.findAll(); 
+        const stats = await LowestStatPlayers.findAll();
 
         if (!stats.length) {
             return res.status(404).json({ error: 'No stats found' });
