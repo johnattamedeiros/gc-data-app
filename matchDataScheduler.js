@@ -66,5 +66,4 @@ cron.schedule('*/10 * * * *', runMatchDataScheduler);
 //runMatchDataScheduler();
 
 
-
 module.exports = runMatchDataScheduler;
