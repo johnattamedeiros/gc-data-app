@@ -19,5 +19,4 @@ console.log("[Match Scheduler] Production mode activated, running every 20 minut
 cron.schedule('*/20 * * * *', runMatchByPlayerScheduler);
 //runMatchByPlayerScheduler();
 
-
 module.exports = runMatchByPlayerScheduler;
