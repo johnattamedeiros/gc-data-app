@@ -65,5 +65,4 @@ console.log("[Match Data Scheduler] Production mode activated, running every 10 
 cron.schedule('*/10 * * * *', runMatchDataScheduler);
 //runMatchDataScheduler();
 
-
 module.exports = runMatchDataScheduler;
