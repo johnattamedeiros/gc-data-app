@@ -9,7 +9,7 @@ class MatchService {
     async insertMatch(matchData) {
         try {
             if (matchData.id) {
-                console.log(`[Match Service] Inserindo partida ${matchData.id}  para o player ${matchData.idPlayer} `);
+                console.log(`[Match Service] Inserting match ${matchData.id} to player ${matchData.idPlayer} `);
 
                 const match = await Match.findOne({
                     where: {
@@ -18,7 +18,7 @@ class MatchService {
                     }
                 });
                 if (match) {
-                    console.log(`[Match Service] Partida já inserida ${matchData.id} para o player ${matchData.idPlayer} - Ignorando inserção`);
+                    console.log(`[Match Service] Match already inserted ${matchData.id} to player ${matchData.idPlayer} - Ignoring`);
                 } else {
                     await Match.create(matchData);
                 }
@@ -56,7 +56,7 @@ class MatchService {
 
             return matches;
         } catch (error) {
-            console.error('Erro ao buscar matches:', error);
+            console.error('Error to found matches:', error);
             throw error;
         }
     }
@@ -70,7 +70,7 @@ class MatchService {
             `);
             return idMatches;
         } catch (error) {
-            console.error('Erro ao buscar IDs Unicos das partidas:', error);
+            console.error('Error to find unique ids from matches:', error);
         }
     }
     async insertMatchData(matchData) {
@@ -82,7 +82,7 @@ class MatchService {
         }
     }
     async insertMatches(matches, idPlayer) {
-        console.log(`[Match Service] Inserindo matches`);
+        console.log(`[Match Service] Inserting matches`);
         try {
             for (const match of matches) {
                 match["idPlayer"] = idPlayer;
@@ -96,7 +96,7 @@ class MatchService {
     async fetchMatchByPageByPlayer(pagesCount, player, month) {
         try {
             for (let page = 1; page <= pagesCount; page++) {
-                console.log(`[Match Service] Buscando na pagina ${page} path : ${player.id}/${month}/${page}`);
+                console.log(`[Match Service] Finding match page ${page} path : ${player.id}/${month}/${page}`);
 
                 const response = await axios.get(`https://gamersclub.com.br/api/box/historyMatchesPage/${player.id}/${month}/${page}`, {
                     headers: {
@@ -174,20 +174,20 @@ class MatchService {
             if (playerHistory?.monthMatches.length > 0) {
 
                 if (playerHistory?.monthMatches[0]?.daysInactive && playerHistory?.monthMatches.length == 1) {
-                    console.log(`[Match Service] Inativando player ${player.id} ${player.nick}, pois está inativo`);
+                    console.log(`[Match Service] Inactivating player ${player.id} ${player.nick}`);
                     await PlayerService.inactivePlayer(player.id);
                 } else {
                     let countMatches = playerHistory?.matches.matches;
-                    console.log(`[Match Service] Verificando partidas do player ${player.id} ${player.nick} tem na base ${player.matches_this_month} e na GC ${countMatches}`);
+                    console.log(`[Match Service] Checking matches count from player ${player.id} ${player.nick} in database: ${player.matches_this_month} on gamersclub:  ${countMatches}`);
                     if (countMatches <= player.matches_this_month) {
-                        console.log(`[Match Service] Todas partidas do player ${player.id} ${player.nick} já foram inseridas`);
+                        console.log(`[Match Service] All matches to ${player.id} ${player.nick} already inserted`);
                         return;
                     }
-                    console.log('[Match Service] Inserindo primeira pagina de partidas');
+                    console.log('[Match Service] Inserting first page');
 
                     await this.insertMatches(playerHistory?.monthMatches, player.id);
                     if (countMatches > 20) {
-                        console.log(`[Match Service] Mais de 20 partidas identificadas para o player ${player.id} ${player.nick} iniciando busca paginada`);
+                        console.log(`[Match Service] More pages identified to player ${player.id} ${player.nick} initiating pages matches`);
                         let pagesCount = Math.floor(countMatches / 20);
                         let month = playerHistory?.months[0];
                         await this.fetchMatchByPageByPlayer(pagesCount, player, month);
@@ -237,7 +237,7 @@ class MatchService {
 
             return await response.json();
         } catch (error) {
-            console.error(`Error fetching data for match ID: ${match.id}`, error);
+            console.error(`[Match Service] Error fetching data for match ID: ${match.id}`, error);
             throw error;
         }
     };

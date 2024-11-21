@@ -54,7 +54,7 @@ router.post('/player', async (req, res) => {
 
         return res.status(201).json(player);
     } catch (error) {
-        console.error('Error to insert player:', error);
+        console.error('[Player Route] Error to insert player:', error);
         res.status(500).json({ error: 'Error to insert player.' });
     }
 });
@@ -69,7 +69,7 @@ router.get('/player/highest-stats', async (req, res) => {
 
         res.status(200).json(stats);
     } catch (error) {
-        console.error('Error fetching highest stats:', error);
+        console.error('[Player Route] Error fetching highest stats:', error);
         res.status(500).json({ error: 'Error fetching highest stats' });
     }
 });
@@ -84,7 +84,7 @@ router.get('/player/lowest-stats', async (req, res) => {
 
         res.status(200).json(stats);
     } catch (error) {
-        console.error('Error fetching lowest stats:', error);
+        console.error('[Player Route] Error fetching lowest stats:', error);
         res.status(500).json({ error: 'Error fetching lowest stats' });
     }
 });
@@ -99,7 +99,7 @@ router.get('/player/rating-diff', async (req, res) => {
 
         res.status(200).json(data);
     } catch (error) {
-        console.error('Error fetching data from view:', error);
+        console.error('[Player Route] Error fetching data from view:', error);
         res.status(500).json({ error: 'Error fetching data from view' });
     }
 });

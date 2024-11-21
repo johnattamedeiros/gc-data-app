@@ -35,7 +35,7 @@ class PlayerService {
 
             return players;
         } catch (error) {
-            console.error('Error fetching players:', error);
+            console.error('[Player Service] Error fetching players:', error);
             throw error;
         }
     }
