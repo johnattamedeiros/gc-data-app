@@ -19,5 +19,4 @@ console.log("[Player Scheduler] Production mode activated, running every 1 hour"
 cron.schedule('0 * * * *', runPlayerScheduler);
 //runPlayerScheduler();
 
-
 module.exports = runPlayerScheduler;
