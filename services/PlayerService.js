@@ -1,6 +1,8 @@
 const Player = require('../models/Player');
 const Match = require('../models/Match');
 const { sequelize } = require('../config/db');
+require('dotenv').config();
+
 
 class PlayerService {
 
@@ -131,7 +133,7 @@ class PlayerService {
                 headers: {
                     accept: "application/json, text/plain, */*",
                     "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-                    authorization: "Basic ZnJvbnRlbmQ6NDdhMTZHMmtHTCFmNiRMRUQlJVpDI25X",
+                    authorization:  process.env.TOKEN,
                     referer: `https://gamersclub.com.br/player/${player.id}`,
                 },
                 method: "GET",
@@ -153,7 +155,7 @@ class PlayerService {
                 headers: {
                     accept: "application/json, text/plain, */*",
                     "accept-language": "pt-BR,pt;q=0.9,en-US;q=0.8,en;q=0.7",
-                    authorization: "Basic ZnJvbnRlbmQ6NDdhMTZHMmtHTCFmNiRMRUQlJVpDI25X",
+                    authorization:  process.env.TOKEN,
                     referer: `https://gamersclub.com.br/player/${player.id}`,
                 },
                 method: "GET",
