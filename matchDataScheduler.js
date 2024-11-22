@@ -62,7 +62,7 @@ const runMatchDataScheduler = async () => {
 };
 
 console.log("[Match Data Scheduler] Production mode activated, running every 10 minutes");
-cron.schedule('*/10 * * * *', runMatchDataScheduler);
+//cron.schedule('*/10 * * * *', runMatchDataScheduler);
 //runMatchDataScheduler();
 
 module.exports = runMatchDataScheduler;
