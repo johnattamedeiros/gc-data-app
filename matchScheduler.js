@@ -16,7 +16,7 @@ const runMatchByPlayerScheduler = async () => {
 };
 
 console.log("[Match Scheduler] Production mode activated, running every 20 minutes");
-cron.schedule('*/20 * * * *', runMatchByPlayerScheduler);
+//cron.schedule('*/20 * * * *', runMatchByPlayerScheduler);
 //runMatchByPlayerScheduler();
 
 module.exports = runMatchByPlayerScheduler;
