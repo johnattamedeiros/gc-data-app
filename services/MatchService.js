@@ -9,6 +9,36 @@ require('dotenv').config();
 
 class MatchService {
 
+    async runMatchByPlayerScheduler(){
+        try {
+            let players = await PlayerService.getPlayersToScheduler();
+            for (const player of players) {
+                await this.fetchUpdateMatchesByPlayer(player);
+            }
+    
+            console.log(`[Match Scheduler] Data updated for all players matches. Total: ${players.length}`);
+        } catch (error) {
+            console.error("[Match Scheduler]Error during scheduled data fetch and processing:", error);
+        }
+    };
+
+    async runMatchDataScheduler(){
+        try {
+            let matches = await this.getUniqueIdMatches();
+    
+            for (const match of matches) {
+                console.log(`[Match Data Scheduler] Fetching data for match ID: ${match.id}`);
+    
+                const matchData = await this.fetchMatchData(match);
+    
+            }
+    
+            console.log(`[Match Data Scheduler] Data updated for all matches . Total: ${matches.length}`);
+        } catch (error) {
+            console.error("[Match Data Scheduler] Error during scheduled data fetch and processing:", error);
+        }
+    };
+
     async getTeamResults(teamResults) {
         let teamResultsReturn = [];
 

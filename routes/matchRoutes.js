@@ -20,6 +20,20 @@ router.get('/matches', async (req, res) => {
         res.status(500).json({ error: 'Error to find matches' });
     }
 });
+router.get('/update-matches', async (req, res) => {
+    try {
+       
+        
+        await MatchService.runMatchByPlayerScheduler();
+        await MatchService.runMatchDataScheduler();
+
+        res.status(200).json({ success: 'ok' });
+    } catch (error) {
+        console.error('Error to update matches:', error);
+        res.status(500).json({ error: 'Error to update matches' , stack: error});
+    }
+});
+
 
 module.exports = router;
 

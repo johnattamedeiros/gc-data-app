@@ -6,7 +6,14 @@ const LowestStatPlayers = require('../models/LowestStatPlayers');
 const RatingDiffByPlayer = require('../models/RatingDiffByPlayer');
 const PlayerService = require('../services/PlayerService');
 
-
+router.get('/update-players', async (req, res) => {
+    try {
+        await PlayerService.runPlayerScheduler();
+        res.status(200).json({ success: 'ok' });
+    } catch (err) {
+        res.status(500).json({ error: 'Error to update Players' });
+    }
+});
 router.get('/player', async (req, res) => {
     try {
         const players = await PlayerService.getPlayers();

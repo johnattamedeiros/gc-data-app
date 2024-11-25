@@ -8,6 +8,20 @@ require('dotenv').config();
 
 class PlayerService {
 
+    async runPlayerScheduler(){
+        try {
+            let players = await this.getPlayers();
+            for (const playerInstance of players) {
+                const player = playerInstance.dataValues;
+                await this.fetchUpdatePlayerData(player);
+            }
+    
+            console.log(`[Player Scheduler] Data updated for all players. Total: ${players.length}`);
+        } catch (error) {
+            console.error("[Player Scheduler]Error during scheduled data fetch and processing:", error);
+        }
+    };
+
     async getPlayers() {
         return await Player.findAll({
             where: {
