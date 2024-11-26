@@ -313,7 +313,7 @@ class MatchService {
                 this.processSaveMatchData(match.id, matchData);
             })
             .catch(error => {
-                console.error(`[Match Service] Error fetching MATCH DATA for player stat ID: ${player.id}`, error);
+                console.error(`[Match Service] Error fetching MATCH DATA match ID: ${match.id}`, error);
                 throw error;
             });
     };
