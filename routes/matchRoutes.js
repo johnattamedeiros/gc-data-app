@@ -22,9 +22,16 @@ router.get('/matches', async (req, res) => {
 });
 router.get('/update-matches', async (req, res) => {
     try {
-       
-        
         await MatchService.runMatchByPlayerScheduler();
+
+        res.status(200).json({ success: 'ok' });
+    } catch (error) {
+        console.error('Error to update matches:', error);
+        res.status(500).json({ error: 'Error to update matches' , stack: error});
+    }
+});
+router.get('/update-matches-data', async (req, res) => {
+    try {
         await MatchService.runMatchDataScheduler();
 
         res.status(200).json({ success: 'ok' });
@@ -33,6 +40,7 @@ router.get('/update-matches', async (req, res) => {
         res.status(500).json({ error: 'Error to update matches' , stack: error});
     }
 });
+
 
 
 module.exports = router;
