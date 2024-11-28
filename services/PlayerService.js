@@ -60,11 +60,13 @@ class PlayerService {
     async updatePlayer(playerId, playerData) {
         try {
             const player = await Player.findByPk(playerId);
+           
             if (player) {
                 let profile = playerData.playerInfo;
+                console.log(profile);
                 player.nick = profile.nick;
                 player.level = profile.level;
-                await player.save();
+                await player.update();
             }
         } catch (error) {
             console.error('[Player Service] Error to update player:', error);
